@@ -12,7 +12,9 @@ typedef Widget StopperBuilder(
     // A scroll physics to be passed to a scrollable widget
     ScrollPhysics physics, 
     /// The current stop value.
-    int stop
+    int stop,
+    /// The target stop value.
+    int targetStop,
   );
 
 /// A widget that changes its height to one of the predefined values based on user-initiated dragging.
@@ -75,8 +77,8 @@ class StopperState extends State<Stopper> with SingleTickerProviderStateMixin {
     this._targetStop = _currentStop;
     _scrollController = ScrollController();
     _scrollPhysics = _getScrollPhysicsForStop(_currentStop);
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
-    final curveAnimation = CurvedAnimation(parent: _animationController, curve: Curves.linear);
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    final curveAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     _tween = Tween<double>(begin: _stops[_currentStop], end: _stops[_targetStop]);
     _animation = _tween.animate(curveAnimation);
     _scrollController.addListener(() {
@@ -190,7 +192,7 @@ class StopperState extends State<Stopper> with SingleTickerProviderStateMixin {
               _animate(_stops[_currentStop] + _dragOffset, _stops[_targetStop]);
             }
           },
-          child: widget.builder(context, _scrollController, _scrollPhysics, _currentStop),
+          child: widget.builder(context, _scrollController, _scrollPhysics, _currentStop, _targetStop),
         ),
         builder: (context, child) {
           return SizedBox(

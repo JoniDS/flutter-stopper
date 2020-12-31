@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 showStopper(
                   context: context,
                   stops: [0.4 * h, h],
-                  builder: (context, scrollController, scrollPhysics, stop) {
+                  builder: (context, scrollController, scrollPhysics, stop, targetStop) {
                     return ClipRRect(
                       borderRadius: stop == 0 ? BorderRadius.only(
                         topLeft: Radius.circular(10),
